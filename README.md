@@ -10,7 +10,7 @@ Add the following to your `pipeline.yml`:
 
 ```yml
 steps:
-  - command: ls > output.md
+  - command: ls > /app/output/output.md
     plugins:
       - docker-compose#v3.7.0:
           run: app
