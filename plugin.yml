@@ -1,0 +1,13 @@
+name: Annotate From file
+description: Annotates the build with the contents of a file
+author: https://github.com/phcyso
+requirements: []
+configuration:
+  properties:
+    path:
+      type: string   
+    style:
+      type: string     
+    must_exist:
+      type: boolean
+  additionalProperties: false

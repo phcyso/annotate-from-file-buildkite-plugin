@@ -1,0 +1,22 @@
+#!/bin/bash
+set -euo pipefail
+
+FILE_PATH="${BUILDKITE_PLUGIN_ANNOTATE_FROM_FILE_PATH}"
+STYLE="${BUILDKITE_PLUGIN_ANNOTATE_FROM_FILE_STYLE:-"info"}"
+MUST_EXIST="${BUILDKITE_PLUGIN_ANNOTATE_FROM_FILE_MUST_EXIST:-"false"}"
+
+echo "--- :spiral_note_pad: Annotating build from file"
+
+if [ ! -e "${FILE_PATH}" ]; then 
+  echo "Annotation file does not exist, Exiting"
+  if [ "${MUST_EXIST}" == "true" ]; then 
+    exit 1
+  fi
+  exit 0
+fi
+
+# TODO Verify the styles
+
+# TODO Allow for appending to existing annotations using contexts
+
+cat "${FILE_PATH}" | buildkite-agent annotate --style "${STYLE}"
