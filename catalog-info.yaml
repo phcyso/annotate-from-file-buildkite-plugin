@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: annotate-from-file-buildkite-plugin
+  description: Buildkite plugin for annotating builds from a file
+  annotations:
+    github.com/project-slug: https://github.com/blstrco/annotate-from-file-buildkite-plugin
+    backstage.io/techdocs-ref: dir:.
+spec:
+  type: Component
+  lifecycle: experimental
+  owner: "linktree"
