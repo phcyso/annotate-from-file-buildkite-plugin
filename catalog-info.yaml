@@ -8,5 +8,6 @@ metadata:
     backstage.io/techdocs-ref: dir:.
 spec:
   type: Component
-  lifecycle: experimental
-  owner: "linktree"
+  system: buildkite
+  lifecycle: production
+  owner: developer-platform
