@@ -17,23 +17,38 @@ steps:
           volumes:
             - "./output:/app/output"
       - phcyso/annotate-from-file#v1.0.0:
-          path: './output/output.md'
+          path: "./output/output.md"
 ```
 
 ## Configuration
 
 ### `path` (Required, string)
 
-The path to the file to show as an annotation.
+The path to the file to show as an annotation. Each files that match this
+pattern will create an annotation.
 
 ### `must_exist` (Optional, boolean, default: false)
 
-If `must_exist` is set to true then the plugin will exit non zero if the files given in `path` does not exist
+If `must_exist` is set to true then the plugin will exit non zero if the files
+given in `path` does not exist
 
 ### `style` (Optional, string, default: "info")
 
-One of the allowed annotation [styles](https://buildkite.com/docs/agent/v3/cli-annotate#annotation-styles)
+One of the allowed annotation
+[styles](https://buildkite.com/docs/agent/v3/cli-annotate#annotation-styles)
 
+### `context` (Optional, string, default: it will use the default context)
+
+The context of the annotation used to differentiate this annotation from others,
+if no defined it will use default context.
+
+Use `file_name`as context value if you want to specify context value same as
+file name.
+
+### `append` (Optional, boolean, default: false)
+
+Append to the body of an existing annotation depending on the given annotation
+context.
 
 ## Developing
 
