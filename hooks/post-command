@@ -1,22 +1,45 @@
 #!/bin/bash
-set -euo pipefail
+# set -euo pipefail
 
 FILE_PATH="${BUILDKITE_PLUGIN_ANNOTATE_FROM_FILE_PATH}"
 STYLE="${BUILDKITE_PLUGIN_ANNOTATE_FROM_FILE_STYLE:-"info"}"
 MUST_EXIST="${BUILDKITE_PLUGIN_ANNOTATE_FROM_FILE_MUST_EXIST:-"false"}"
+CONTEXT="${BUILDKITE_PLUGIN_ANNOTATE_FROM_FILE_CONTEXT:-""}"
+APPEND="${BUILDKITE_PLUGIN_ANNOTATE_FROM_FILE_APPEND:-"false"}"
+
 
 echo "--- :spiral_note_pad: Annotating build from file"
 
-if [ ! -e "${FILE_PATH}" ]; then 
+# if [ ! -e "${FILE_PATH}*" ]; then
+if find . -name "${FILE_PATH}*" -print -quit | grep -q .; then
+  echo "Annotation file exists, continuing"
+else
   echo "Annotation file does not exist, Exiting"
-  if [ "${MUST_EXIST}" == "true" ]; then 
-    exit 1
-  fi
-  exit 0
+  [ "${MUST_EXIST}" == "true" ] && exit 1 || exit 0
 fi
 
-# TODO Verify the styles
+# Check style values https://buildkite.com/docs/agent/v3/cli-annotate#style
+if [[ ! $STYLE =~ ^(success|info|warning|error)$ ]]; then
+  echo "'$STYLE' is a non valid style."
+  exit 1
+fi
+[[ "$APPEND" == "true" ]] && APPEND_FLAG="--append" || APPEND_FLAG=""
+[[ -n "$CONTEXT" ]] && CONTEXT_FLAG="--context $CONTEXT" || CONTEXT_FLAG=""
 
-# TODO Allow for appending to existing annotations using contexts
+echo "FILE_PATH: $FILE_PATH"
+echo "STYLE: $STYLE"
+echo "MUST_EXIST: $MUST_EXIST"
+echo "CONTEXT_FLAG: $CONTEXT_FLAG"
+echo "APPEND_FLAG: $APPEND_FLAG"
 
-cat "${FILE_PATH}" | buildkite-agent annotate --style "${STYLE}"
+# Use find to search for all files that match the pattern specified by FILE_PATH
+ANNOTATION_COUNTER=0
+
+find "$(dirname $FILE_PATH)" -name "$(basename $FILE_PATH)*" -type f | while read -r file; do
+  ((ANNOTATION_COUNTER++))
+  [[ "$CONTEXT" == "file_name" ]] && CONTEXT_FLAG="--context $(basename $file)"
+  cat "$file" | buildkite-agent annotate --style "$STYLE" $CONTEXT_FLAG $APPEND_FLAG
+  echo "$ANNOTATION_COUNTER Annotation created for $FILE_PATH file $CONTEXT_FLAG"
+done
+
+echo "Annotation created - Done"

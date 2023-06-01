@@ -1,10 +1,10 @@
 services:
   lint:
     image: buildkite/plugin-linter
-    command: ['--id', 'phcyso/annotate-from-file']
+    command: ["--id", "phcyso/annotate-from-file"]
     volumes:
       - ".:/plugin:ro"
   tests:
     image: buildkite/plugin-tester
     volumes:
-      - ".:/plugin:ro"
+      - ".:/plugin"
