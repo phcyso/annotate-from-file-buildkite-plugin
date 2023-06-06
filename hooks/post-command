@@ -9,9 +9,7 @@ APPEND="${BUILDKITE_PLUGIN_ANNOTATE_FROM_FILE_APPEND:-"false"}"
 
 
 echo "--- :spiral_note_pad: Annotating build from file"
-
-# FILE_PATH="NOFILE"; find "$(dirname $FILE_PATH)" -name "$(basename $FILE_PATH)*"
-
+echo "FILE_PATH:$FILE_PATH"
 
 if find "$(dirname $FILE_PATH)" -name "$(basename $FILE_PATH)*" -print -quit | grep .; then
   echo "Annotation file exists, continuing"
