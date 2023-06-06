@@ -27,10 +27,10 @@ setup() {
 @test "Exits cleanly when file doesnt exist " {
   export BUILDKITE_PLUGIN_ANNOTATE_FROM_FILE_PATH="NOFILE"
 
-   run "$PWD/hooks/post-command"
+  run "$PWD/hooks/post-command"
 
-   assert_output --partial "Annotation file does not exist, Exiting"
-   assert_success
+  assert_output --partial "Annotation file does not exist, Exiting"
+  assert_success
 }
 
 @test "Exits with 1 when file doesnt exist and must_exist is true " {
