@@ -5,9 +5,13 @@ requirements: []
 configuration:
   properties:
     path:
-      type: string   
+      type: string
     style:
-      type: string     
+      type: string
     must_exist:
+      type: boolean
+    context:
+      type: string
+    append:
       type: boolean
   additionalProperties: false
